@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AlzzGenk-Resource</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1c1c1e;
+      color: #e5e5ea;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin: 20px 0;
+      padding: 0 16px;
+      position: relative;
+      z-index: 10;
+      animation: slideDown 0.8s ease-out;
+    }
+
+    .main-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 1px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 32px;
+      border-radius: 20px;
+      display: inline-block;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
+      margin-bottom: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #a1a1a3;
+      letter-spacing: 0.5px;
+      animation: fadeIn 1s ease-out 0.3s both;
+    }
+
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(28, 28, 30, 0.95);
+      padding: 16px 0;
+      margin-bottom: 0;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sticky-nav.scrolled {
+      background: rgba(28, 28, 30, 0.98);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      padding: 12px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      gap: 8px;
+      padding: 0 16px;
+      flex-wrap: wrap;
+      max-width: 800px;
+    }
+
+    nav a {
+      padding: 12px 24px;
+      border-radius: 25px;
+      background-color: rgba(44, 44, 46, 0.8);
+      color: #0a84ff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid rgba(58, 58, 60, 0.5);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    nav a:hover::before {
+      left: 100%;
+    }
+
+    nav a:hover {
+      background-color: rgba(58, 58, 60, 0.9);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(10, 132, 255, 0.2);
+    }
+
+    nav a.active {
+      background: linear-gradient(135deg, #0a84ff, #0077cc);
+      color: white;
+      border-color: #0a84ff;
+      box-shadow: 0 8px 30px rgba(10, 132, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 16px 80px;
+    }
+
+    .section {
+      display: none;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card {
+      background-color: rgba(44, 44, 46, 0.8);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(58, 58, 60, 0.5);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(10, 132, 255, 0.3);
+    }
+
+    .module {
+      background-color: rgba(44, 44, 46, 0.8);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(58, 58, 60, 0.5);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .module::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(10, 132, 255, 0.1), transparent);
+      transition: left 0.8s ease;
+    }
+
+    .module:hover::before {
+      left: 100%;
+    }
+
+    .module:hover {
+      border-color: #0a84ff;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(10, 132, 255, 0.2);
+    }
+
+    .module h2 {
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      transition: color 0.3s ease;
+    }
+
+    .module p {
+      font-size: 14px;
+      color: #a1a1a3;
+      margin-bottom: 16px;
+      line-height: 1.6;
+      transition: color 0.3s ease;
+    }
+
+    .module a {
+      color: #0a84ff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 20px;
+      background: rgba(10, 132, 255, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(10, 132, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .module a:hover {
+      background: rgba(10, 132, 255, 0.2);
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(10, 132, 255, 0.3);
+    }
+
+    .support-box h3 {
+      margin-bottom: 16px;
+      font-size: 20px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .support-box p {
+      font-size: 15px;
+      color: #a1a1a3;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .progress-bar {
+      display: flex;
+      height: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 20px 0;
+      background: rgba(58, 58, 60, 0.5);
+      position: relative;
+    }
+
+    .progress-bar span {
+      flex: 1;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .progress-bar span::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.8s ease;
+    }
+
+    .progress-bar:hover span::after {
+      left: 100%;
+    }
+
+    .social-link {
+      display: inline-block;
+      color: #0a84ff;
+      text-decoration: none;
+      margin: 10px 20px 10px 0;
+      font-weight: 500;
+      padding: 12px 24px;
+      background: rgba(10, 132, 255, 0.1);
+      border-radius: 12px;
+      border: 1px solid rgba(10, 132, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .social-link:hover::before {
+      left: 100%;
+    }
+
+    .social-link:hover {
+      background: rgba(10, 132, 255, 0.2);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(10, 132, 255, 0.2);
+    }
+
+    .thumbnail {
+      text-align: center;
+      margin: 24px 0;
+    }
+
+    .thumbnail img {
+      max-width: 100%;
+      width: 600px;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(58, 58, 60, 0.5);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .thumbnail img:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 16px;
+      font-size: 14px;
+      color: #8e8e93;
+      background: rgba(28, 28, 30, 0.95);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: white;
+      text-align: center;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    .modules-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .premium-badge {
+      background: linear-gradient(135deg, #ffd700, #ff6b00);
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+      margin-left: 10px;
+      animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+      }
+    }
+
+    /* Smooth scrolling for the entire page */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Floating back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #0a84ff, #0077cc);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      box-shadow: 0 8px 30px rgba(10, 132, 255, 0.4);
+      border: none;
+      font-size: 18px;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 12px 40px rgba(10, 132, 255, 0.6);
+    }
+
+    /* Content fade in animation */
+    .fade-in {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Stagger animation for modules */
+    .module:nth-child(1) { animation-delay: 0.1s; }
+    .module:nth-child(2) { animation-delay: 0.2s; }
+    .module:nth-child(3) { animation-delay: 0.3s; }
+    .module:nth-child(4) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="main-title">✨ Critical - Laboratory ✨</div>
+    <div class="subtitle">Tweak, Test, Transform — for a better Android experience.</div>
+  </div>
+
+  <div class="sticky-nav">
+    <nav>
+      <a class="active" onclick="showSection('home')">Home</a>
+      <a onclick="showSection('modules')">Modules</a>
+      <a onclick="showSection('support')">Support</a>
+      <a onclick="showSection('premium')">Premium</a>
+    </nav>
+  </div>
+
+  <div class="container">
+    <!-- Home Section -->
+    <div id="home" class="section active">
+      <div class="card fade-in">
+        <div class="thumbnail">
+          <img src="https://raw.githubusercontent.com/alzzhosting/upload-image/refs/heads/main/thumbnail%202%20%5B59E8427%5D.png" alt="Critical Thumbnail">
+        </div>
+        
+        <h3>👤 Introduction</h3>
+        <p>Hi everyone! 👋 How are you? Nice to meet you, My name is AlzzGenk. I live in Kebumen, Central Java, Indonesia. Just an ordinary high school student.</p>
+        <p>An independent developer who loves to explore the Android system — from light tweaks, performance enhancements, to advanced system experiments.</p>
+        
+        <div class="progress-bar">
+          <span style="background-color:#0a84ff"></span>
+          <span style="background-color:#ff3b30"></span>
+          <span style="background-color:#af521c"></span>
+          <span style="background-color:#34c759"></span>
+        </div>
+
+        <h3>♻️ About Project</h3>
+        <p>"Critical Lab is where I share various Android optimization experiments, tweaks, and lightweight modules for everyone. All my projects are designed for efficiency, stability, and full control.</p>
+        <p>Through Critical Lab, I share various projects and tools that I have developed myself to improve performance, efficiency, and user experience on various Android devices."</p>
+        
+        <div class="progress-bar">
+          <span style="background-color:#0a84ff"></span>
+          <span style="background-color:#ff3b30"></span>
+          <span style="background-color:#af521c"></span>
+          <span style="background-color:#34c759"></span>
+        </div>
+
+        <h3>📔 My Social Media</h3>
+        <a class="social-link" href="https://youtube.com/@AlzzGenkOpenSource" target="_blank">📺 YouTube</a>
+        <a class="social-link" href="https://t.me/AlzzGenk" target="_blank">💬 Telegram Disc</a>
+        
+        <h3 style="text-align: center; margin-top: 24px; color: #0a84ff;">Thanks for visit and bye-bye..</h3>
+      </div>
+    </div>
+
+    <!-- Modules Section -->
+    <div id="modules" class="section">
+      <div class="section-title">Free Modules</div>
+      <div class="modules-grid">
+        <div class="module fade-in">
+          <h2>Critical-Disable-Log 🐸 | 1.1</h2>
+          <p>Minimize Tracking / Statistics Activity.</p>
+          <a href="https://sfl.gl/oLcVo0M" download>Download</a>
+        </div>
+
+        <div class="module fade-in">
+          <h2>Critical-Network-Opt 🐬 | 1.1</h2>
+          <p>Increase Network Speed Data or Wifi.</p>
+          <a href="https://sfl.gl/s0zxp" download>Download</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium Section -->
+    <div id="premium" class="section">
+      <div class="section-title">Premium Modules <span class="premium-badge">PRO</span></div>
+      <div class="card fade-in">
+        <p>Module Premium adalah module yang sangat berbeda karena sudah ada sistem surfaceFlinger dan optimisasi yang lebih dalam.</p>
+        
+        <div class="modules-grid" style="margin-top: 20px;">
+          <div class="module fade-in">
+            <h2>XTP Module | 1.1 <span class="premium-badge">PRO</span></h2>
+            <p>Increase system performance and battery efficiency with advanced surfaceFlinger optimization.</p>
+            <a href="https://t.me/AlzzGenk">Buy Module</a>
+          </div>
+          
+          <div class="module fade-in">
+            <h2>Critical-Boost-Performa Module | 1.1 <span class="premium-badge">PRO</span></h2>
+            <p>Increase system performance and battery saver with deep system integration.</p>
+            <a href="https://t.me/AlzzGenk">Buy Module</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support Section -->
+    <div id="support" class="section">
+      <div class="section-title">Support & Help</div>
+      <div class="card fade-in">
+        <h3>Support Me</h3>
+        <p>This project was created by AlzzGenk. If you'd like to support my work, you can send a donation through the available platforms below. Every contribution helps me continue developing and improving these projects.</p>
+        
+        <div class="progress-bar">
+          <span style="background-color:#0a84ff"></span>
+          <span style="background-color:#ff3b30"></span>
+          <span style="background-color:#af521c"></span>
+          <span style="background-color:#34c759"></span>
+        </div>
+
+        <a class="social-link" href="https://sociabuzz.com/alzzresource/tribe" target="_blank">💙 Sociabuzz</a>
+
+        <h3 style="margin-top: 24px;">Need Help?</h3>
+        <p>If you encounter issues, contact us via Telegram or check our GitHub repositories for documentation.</p>
+        
+        <div class="progress-bar">
+          <span style="background-color:#0a84ff"></span>
+          <span style="background-color:#ff3b30"></span>
+          <span style="background-color:#af521c"></span>
+          <span style="background-color:#34c759"></span>
+        </div>
+
+        <a class="social-link" href="https://t.me/AlzzGenk" target="_blank">📱 Telegram</a>
+        <a class="social-link" href="https://github.com/AlzzGenkResource" target="_blank">💻 GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+  <footer>&copy; 2025 Project Critical Lab — by AlzzGenk</footer>
+
+  <script>
+    function showSection(id) {
+      // Smooth transition for section change
+      const currentSection = document.querySelector('.section.active');
+      if (currentSection) {
+        currentSection.style.opacity = '0';
+        currentSection.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+          currentSection.classList.remove('active');
+          
+          // Show new section
+          const newSection = document.getElementById(id);
+          newSection.classList.add('active');
+          setTimeout(() => {
+            newSection.style.opacity = '1';
+            newSection.style.transform = 'translateY(0)';
+          }, 50);
+        }, 300);
+      }
+
+      // Update active nav with smooth transition
+      document.querySelectorAll('nav a').forEach(el => {
+        el.style.transform = 'scale(1)';
+        el.classList.remove('active');
+      });
+      
+      const activeNav = event.target;
+      activeNav.classList.add('active');
+      activeNav.style.transform = 'scale(1.05)';
+      
+      // Scroll to top with smooth behavior
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
+      // Update URL hash
+      window.location.hash = id;
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Show back to top button when scrolled down
+    window.addEventListener('scroll', function() {
+      const backToTop = document.querySelector('.back-to-top');
+      const stickyNav = document.querySelector('.sticky-nav');
+      
+      if (window.scrollY > 300) {
+        backToTop.classList.add('visible');
+        stickyNav.classList.add('scrolled');
+      } else {
+        backToTop.classList.remove('visible');
+        stickyNav.classList.remove('scrolled');
+      }
+    });
+
+    // Handle URL hash on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      const hash = window.location.hash.substring(1);
+      if (hash && document.getElementById(hash)) {
+        // Simulate click on the corresponding nav item
+        const navItems = document.querySelectorAll('nav a');
+        navItems.forEach(item => {
+          if (item.textContent.toLowerCase().includes(hash) || hash === 'home') {
+            item.click();
+          }
+        });
+      }
+      
+      // Add initial animations
+      setTimeout(() => {
+        document.querySelectorAll('.fade-in').forEach((el, index) => {
+          el.style.animationDelay = `${index * 0.1}s`;
+        });
+      }, 100);
+    });
+
+    // Add smooth hover effects
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add parallax effect to header on scroll
+      window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const header = document.querySelector('.header');
+        header.style.transform = `translateY(${scrolled * 0.5}px)`;
+      });
+
+      // Enhanced hover effects
+      const elements = document.querySelectorAll('.card, .module, .social-link');
+      elements.forEach(el => {
+        el.addEventListener('mouseenter', function() {
+          this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+        
+        el.addEventListener('mouseleave', function() {
+          this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+      });
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const sections = ['home', 'modules', 'support', 'premium'];
+        const currentSection = document.querySelector('.section.active').id;
+        const currentIndex = sections.indexOf(currentSection);
+        
+        let nextIndex;
+        if (e.key === 'ArrowDown') {
+          nextIndex = (currentIndex + 1) % sections.length;
+        } else {
+          nextIndex = (currentIndex - 1 + sections.length) % sections.length;
+        }
+        
+        // Simulate click on the corresponding nav item
+        document.querySelectorAll('nav a')[nextIndex].click();
+      }
+    });
+  </script>
+</body>
+</html>
